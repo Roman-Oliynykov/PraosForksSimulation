@@ -1,47 +1,46 @@
 package home.rom;
 
+import java.util.ArrayList;
+
 public class PraosForksSimulation {
-    static final int delta = 2;
-    static final double f = 2.0/3;
+    static final int delta = 5;
+    static final double f = 1.0/20;
     static final long staticEpochLen = 100000;
     CyclicBuffer cb;
 
     int [] forkStats;
 
     public PraosForksSimulation() {
-        forkStats = new int[ delta + 1 ];
+        forkStats = new int[ 100*(delta + 1) ];
         cb = new CyclicBuffer();
     }
 
-    public int[] getForkStats() {
+    public ArrayList<Integer> getForkStats() {
+        PraosStakeholders stakeHolders = new PraosStakeholders( PraosStakeholders.StakeDistributionLaw.FLAT,
+                                                                f,
+                                                                PraosStakeholders.defaultNumberOfStakeholders );
+
         for(long i = 0; i < staticEpochLen; i++)
-            if ( Math.random() < f ) forkStats[ cb.getNumberOfBranchesWithSlotAdvance( 1 ) ]++;
-            else forkStats[ cb.getNumberOfBranchesWithSlotAdvance( 0 ) ]++;
+            forkStats[ cb.getNumberOfBranchesWithSlotAdvance( stakeHolders.getNumberOfSlotLeaders() ) ]++;
 
-        return forkStats;
-    }
+        System.out.println( "Maximum number of leaders per one slot: " + stakeHolders.maxLeaders );
 
+        int nonZeroElementCnt = 1;
+        for(int i = forkStats.length - 1; i > 0; i--) {
+            if ( forkStats[ i ] == 0 ) continue;
+            nonZeroElementCnt = i + 1;
+            break;
+        }
 
-}
+        ArrayList<Integer> result = new ArrayList<>();
+        for(int i = 0; i < nonZeroElementCnt; i++)
+            result.add( forkStats[ i ] );
 
-class CyclicBuffer {
-    int [] buffer;
-    int currentSlot = 0;
-    int branches = 0;
+//        for(long i = 0; i < staticEpochLen; i++)
+//            if ( Math.random() < f ) forkStats[ cb.getNumberOfBranchesWithSlotAdvance( 1 ) ]++;
+//            else forkStats[ cb.getNumberOfBranchesWithSlotAdvance( 0 ) ]++;
 
-    public CyclicBuffer (){
-        buffer = new int[PraosForksSimulation.delta + 1];
-    }
-
-    public int getNumberOfBranchesWithSlotAdvance(int isActiveSlot) {
-        int nextSlot = (currentSlot + 1) % ( PraosForksSimulation.delta + 1 );
-        branches -= buffer[ nextSlot ];
-        buffer[ nextSlot ] = 0;
-        buffer[ currentSlot ] = isActiveSlot;
-        branches += isActiveSlot;
-        currentSlot = nextSlot;
-
-        if ( branches < 2 ) return 1;
-        else return branches;
+        return result;
     }
 }
+
