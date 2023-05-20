@@ -9,6 +9,7 @@ public class PraosStakeholders {
     int numberOfStakeholders = defaultNumberOfStakeholders;
 
     double [] stakeDistribution;
+    double [] phiDistribution;
 
     public int maxLeaders = 0;
 
@@ -41,6 +42,11 @@ public class PraosStakeholders {
                 break;
             }
         }
+
+        phiDistribution = new double[ numberOfStakeholders ];
+
+        for(int i = 0; i < numberOfStakeholders; i++)
+            phiDistribution[ i ] = phi( stakeDistribution[ i ] );
     }
 
     double phi(double alpha) {
@@ -51,7 +57,8 @@ public class PraosStakeholders {
         int slotLeaders = 0;
 
         for (int i = 0; i < numberOfStakeholders; i++)
-            if ( Math.random() < phi( stakeDistribution[ i ] ) ) slotLeaders++;
+            if ( Math.random() <  phiDistribution[ i ] ) slotLeaders++;
+//            if ( Math.random() < phi( stakeDistribution[ i ] ) ) slotLeaders++;
 
         if ( maxLeaders < slotLeaders ) maxLeaders = slotLeaders;
 

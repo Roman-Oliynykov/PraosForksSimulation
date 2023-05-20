@@ -3,9 +3,15 @@ package home.rom;
 import java.util.ArrayList;
 
 public class PraosForksSimulation {
-    static final int delta = 5;
+    static final int delta = 3;
     static final double f = 1.0/20;
     static final long staticEpochLen = 100000;
+
+    public int maxLeaders = 0;
+    public int successfulBlockCount = 0;
+    public int maxOrphanedForkLen = 0;
+    public int forksHappened = 0;
+
     CyclicBuffer cb;
 
     int [] forkStats;
@@ -23,7 +29,11 @@ public class PraosForksSimulation {
         for(long i = 0; i < staticEpochLen; i++)
             forkStats[ cb.getNumberOfBranchesWithSlotAdvance( stakeHolders.getNumberOfSlotLeaders() ) ]++;
 
-        System.out.println( "Maximum number of leaders per one slot: " + stakeHolders.maxLeaders );
+        this.maxLeaders = stakeHolders.maxLeaders;
+        this.successfulBlockCount = cb.successfulBlockCnt;
+        this.maxOrphanedForkLen = cb.maxOrphanedForkLen;
+        this.forksHappened = cb.forksHappened;
+
 
         int nonZeroElementCnt = 1;
         for(int i = forkStats.length - 1; i > 0; i--) {
@@ -35,10 +45,6 @@ public class PraosForksSimulation {
         ArrayList<Integer> result = new ArrayList<>();
         for(int i = 0; i < nonZeroElementCnt; i++)
             result.add( forkStats[ i ] );
-
-//        for(long i = 0; i < staticEpochLen; i++)
-//            if ( Math.random() < f ) forkStats[ cb.getNumberOfBranchesWithSlotAdvance( 1 ) ]++;
-//            else forkStats[ cb.getNumberOfBranchesWithSlotAdvance( 0 ) ]++;
 
         return result;
     }
