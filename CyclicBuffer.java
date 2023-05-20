@@ -9,7 +9,6 @@ public class CyclicBuffer {
     int slotsAfterLastSuccessfulBlock = 0;
 
     boolean forksPresent = false;
-//    int slotsAfterLastFork = 0;
     int orphanedForkLen = 0;
     public int maxOrphanedForkLen = 0;
     public int forksHappened = 0;
@@ -40,15 +39,18 @@ public class CyclicBuffer {
             if ( maxOrphanedForkLen < orphanedForkLen )
                 maxOrphanedForkLen = orphanedForkLen;
             orphanedForkLen = 0;
-
-            if ( forksPresent ) ++forksHappened;
-
             forksPresent = false;
         } else forksPresent = true;
 
-        if ( forksPresent && ( numberOfSlotLeaders > 0) && !longestChainExtended ) {
-            orphanedForkLen++;
-//            slotsAfterLastFork++;
+// Worst case scenario for forks:
+// if there are several multiple slot leaders, all of them extend only one branch and create as many forks as can happen
+        if ( numberOfSlotLeaders > 1 )
+            forksHappened += ( longestChainExtended ? (numberOfSlotLeaders - 1) : numberOfSlotLeaders );
+
+// Counting the length of the current longest orphaned branch
+        if ( forksPresent ) {
+            if ( numberOfSlotLeaders > 1 ) orphanedForkLen++;
+            else if ( (numberOfSlotLeaders == 1) && !longestChainExtended ) orphanedForkLen++;
         }
 
         if ( branches < 2 ) return 1;

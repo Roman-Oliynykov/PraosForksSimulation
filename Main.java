@@ -12,12 +12,12 @@ public class Main {
         System.out.printf( "Maximal observed number of leaders per one slot: %d\n", pf.maxLeaders );
         System.out.printf( "For the worst network delays happening for the longest chain:\n" +
                         "  Actual observed number of active slot coefficient (f): %f\n  Slots per a block: %f " +
-                        "(while the ideal case with no forks: %f slots per a block)\n" +
-                        "  Reached %2.1f%% of the ideal throughput\n\n",
+                        "(while the ideal average case with no forks: %f slots per a block)\n" +
+                        "  Reached %2.1f%% of the ideal average throughput\n\n",
                 pf.successfulBlockCount / (double )PraosForksSimulation.staticEpochLen,
                 PraosForksSimulation.staticEpochLen / (double)pf.successfulBlockCount,
                 1/PraosForksSimulation.f,
-                100 * ( 1/PraosForksSimulation.f ) / ( PraosForksSimulation.staticEpochLen / (double)pf.successfulBlockCount )
+                100 * (double)pf.successfulBlockCount / ( PraosForksSimulation.f * PraosForksSimulation.staticEpochLen)
                 );
 
         System.out.printf( "For the prompt network sync for the forks happened:\n" +
