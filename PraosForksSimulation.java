@@ -3,7 +3,7 @@ package home.rom;
 import java.util.ArrayList;
 
 public class PraosForksSimulation {
-    static final int delta = 5;
+    static final int delta = 8;
     static final double f = 1.0/20;
     static final long staticEpochLen = 100000;
 

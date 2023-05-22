@@ -19,6 +19,8 @@ public class CyclicBuffer {
 
     public int getNumberOfBranchesWithSlotAdvance(int numberOfSlotLeaders) {
 
+        int seenBranches = branches;
+
         int nextSlot = (currentSlot + 1) % ( PraosForksSimulation.delta + 1 );
         branches -= buffer[ nextSlot ];
         buffer[ nextSlot ] = 0;
@@ -42,10 +44,12 @@ public class CyclicBuffer {
             forksPresent = false;
         } else forksPresent = true;
 
-// Worst case scenario for forks:
-// if there are several multiple slot leaders, all of them extend only one branch and create as many forks as can happen
-        if ( numberOfSlotLeaders > 1 )
-            forksHappened += ( longestChainExtended ? (numberOfSlotLeaders - 1) : numberOfSlotLeaders );
+// Scenario for forks:
+// if there are several multiple slot leaders, each of them extend a separate existing chain
+// or create a new fork if slot leaders exceed the number of existing chains
+        if ( (numberOfSlotLeaders > 0) && (numberOfSlotLeaders > seenBranches) )
+            forksHappened += ( longestChainExtended ? (numberOfSlotLeaders - seenBranches - 1) :
+                                                        numberOfSlotLeaders - seenBranches );
 
 // Counting the length of the current longest orphaned branch
         if ( forksPresent ) {

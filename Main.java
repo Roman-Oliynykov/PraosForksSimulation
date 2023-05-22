@@ -21,8 +21,13 @@ public class Main {
                 );
 
         System.out.printf( "For the prompt network sync for the forks happened:\n" +
-                "  Maximal observed fork length: %d\n" + "  Total forks happend: %d\n\n",
-                pf.maxOrphanedForkLen, pf.forksHappened );
+                "  Maximal observed fork length: %d\n" + "  Total forks happened: %d \n" +
+                "  Ratio of the number of forks happened per one block in the finally generated longest chain: %f \n\n",
+                pf.maxOrphanedForkLen,
+                pf.forksHappened,
+                pf.forksHappened / (double)pf.successfulBlockCount );
+
+  //      System.out.printf("Ratio (number of forks happened)/(per one block in the finally generated longest chain): %f \n\n", pf.forksHappened / ( PraosForksSimulation.f * (double )PraosForksSimulation.staticEpochLen ) );
 
         System.out.println("The number of forks : Observed share of all timeslots with such a number of forks");
 
