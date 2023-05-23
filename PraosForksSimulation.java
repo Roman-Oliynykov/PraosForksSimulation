@@ -3,14 +3,15 @@ package home.rom;
 import java.util.ArrayList;
 
 public class PraosForksSimulation {
-    static final int delta = 8;
-    static final double f = 1.0/20;
+    static final int delta = 0;
+    static final double f = 2.0/3;
     static final long staticEpochLen = 100000;
 
     public int maxLeaders = 0;
     public int successfulBlockCount = 0;
     public int maxOrphanedForkLen = 0;
     public int forksHappened = 0;
+    public int orphanedBlockCount = 0;
 
     CyclicBuffer cb;
 
@@ -33,6 +34,7 @@ public class PraosForksSimulation {
         this.successfulBlockCount = cb.successfulBlockCnt;
         this.maxOrphanedForkLen = cb.maxOrphanedForkLen;
         this.forksHappened = cb.forksHappened;
+        this.orphanedBlockCount = cb.orphanedBlockCount;
 
 
         int nonZeroElementCnt = 1;

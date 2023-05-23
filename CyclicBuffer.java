@@ -12,6 +12,7 @@ public class CyclicBuffer {
     int orphanedForkLen = 0;
     public int maxOrphanedForkLen = 0;
     public int forksHappened = 0;
+    public int orphanedBlockCount = 0;
 
     public CyclicBuffer (){
         buffer = new int[PraosForksSimulation.delta + 1];
@@ -36,6 +37,9 @@ public class CyclicBuffer {
             longestChainExtended = true;
             slotsAfterLastSuccessfulBlock = 0;
         }
+
+        if ( numberOfSlotLeaders > 0 )
+            orphanedBlockCount += ( longestChainExtended ? numberOfSlotLeaders - 1 : numberOfSlotLeaders );
 
         if ( branches < 2 ) {
             if ( maxOrphanedForkLen < orphanedForkLen )
