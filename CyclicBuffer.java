@@ -49,7 +49,7 @@ public class CyclicBuffer {
         } else forksPresent = true;
 
 // Scenario for forks:
-// if there are several multiple slot leaders, each of them extend a separate existing chain
+// if there are several multiple slot leaders, each of them extend a separate existing chain (to simulate the longest forks)
 // or create a new fork if the number of slot leaders exceed the number of the currently existing chains
         if ( (numberOfSlotLeaders > 0) && (numberOfSlotLeaders >= seenBranches) )
             forksHappened += ( longestChainExtended ?

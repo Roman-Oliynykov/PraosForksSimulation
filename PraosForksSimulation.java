@@ -3,9 +3,13 @@ package home.rom;
 import java.util.ArrayList;
 
 public class PraosForksSimulation {
-    static final int delta = 0;
-    static final double f = 2.0/3;
-    static final long staticEpochLen = 100000;
+    public static int delta = 1;
+    public static double f = 2.0/3;
+    public static long staticEpochLen = 100000;
+
+    int numberOfStakeholders = 100;
+
+    PraosStakeholders.StakeDistributionLaw stakeDistribution = PraosStakeholders.StakeDistributionLaw.FLAT;
 
     public int maxLeaders = 0;
     public int successfulBlockCount = 0;
@@ -17,15 +21,31 @@ public class PraosForksSimulation {
 
     int [] forkStats;
 
-    public PraosForksSimulation() {
-        forkStats = new int[ 100*(delta + 1) ];
+    public PraosForksSimulation( double f, // active slot coefficient
+                                 int delta, // block propagation delay (measured in timeslots)
+                                 long epochLength, // number of timeslots for simulation
+                                 PraosStakeholders.StakeDistributionLaw stakeDistribution, // type of stake distribution
+                                 int numberOfStakeholders
+                                ) {
+        this.f = f;
+        this.delta = delta;
+        this.staticEpochLen =epochLength;
+        this.stakeDistribution = stakeDistribution;
+        this.numberOfStakeholders = numberOfStakeholders;
+
+        forkStats = new int[ numberOfStakeholders*(delta + 1) ];
         cb = new CyclicBuffer();
     }
 
+//    public PraosForksSimulation() {
+//        forkStats = new int[ 100*(delta + 1) ];
+//        cb = new CyclicBuffer();
+//    }
+
     public ArrayList<Integer> getForkStats() {
-        PraosStakeholders stakeHolders = new PraosStakeholders( PraosStakeholders.StakeDistributionLaw.FLAT,
+        PraosStakeholders stakeHolders = new PraosStakeholders( stakeDistribution,
                                                                 f,
-                                                                PraosStakeholders.defaultNumberOfStakeholders );
+                                                                numberOfStakeholders );
 
         for(long i = 0; i < staticEpochLen; i++)
             forkStats[ cb.getNumberOfBranchesWithSlotAdvance( stakeHolders.getNumberOfSlotLeaders() ) ]++;
