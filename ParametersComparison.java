@@ -143,7 +143,7 @@ class FixedPropagationTimeSimulation {
 
             System.out.printf("%27s |", "" );
             for(int j = 0; j < specifiedF.size(); j++)
-                System.out.printf("%22s %4.2f |", " Real avg block time:", paramsAndProperties.get(i)
+                System.out.printf("%21s %6.2f |", " Real avg block time:", paramsAndProperties.get(i)
                                                             .get(j).realBlockTime  );
             System.out.println();
 
@@ -155,7 +155,7 @@ class FixedPropagationTimeSimulation {
 
             System.out.printf("%27s |", "" );
             for(int j = 0; j < specifiedF.size(); j++)
-                System.out.printf("%23s %4d |", " Max fork len::", paramsAndProperties.get(i)
+                System.out.printf("%23s %4d |", " Max fork len:", paramsAndProperties.get(i)
                         .get(j).maxOrphanedForkLen  );
             System.out.println();
 

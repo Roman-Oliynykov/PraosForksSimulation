@@ -37,11 +37,6 @@ public class PraosForksSimulation {
         cb = new CyclicBuffer();
     }
 
-//    public PraosForksSimulation() {
-//        forkStats = new int[ 100*(delta + 1) ];
-//        cb = new CyclicBuffer();
-//    }
-
     public ArrayList<Integer> getForkStats() {
         PraosStakeholders stakeHolders = new PraosStakeholders( stakeDistribution,
                                                                 f,

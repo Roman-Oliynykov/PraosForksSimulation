@@ -32,7 +32,7 @@ public class CyclicBuffer {
         ++slotsAfterLastSuccessfulBlock;
 
         boolean longestChainExtended = false;
-        if ( (numberOfSlotLeaders > 0) && (slotsAfterLastSuccessfulBlock > PraosForksSimulation.delta) ) {
+        if ( (numberOfSlotLeaders > 0) && (slotsAfterLastSuccessfulBlock >= PraosForksSimulation.delta) ) {
             ++successfulBlockCnt;
             longestChainExtended = true;
             slotsAfterLastSuccessfulBlock = 0;
@@ -50,7 +50,7 @@ public class CyclicBuffer {
 
 // Scenario for forks:
 // if there are several multiple slot leaders, each of them extend a separate existing chain (to simulate the longest forks)
-// or create a new fork if the number of slot leaders exceed the number of the currently existing chains
+// or creates a new fork if the number of slot leaders exceed the number of the currently existing chains
         if ( (numberOfSlotLeaders > 0) && (numberOfSlotLeaders >= seenBranches) )
             forksHappened += ( longestChainExtended ?
 // all branches, including the longest (final) branch have been extended; extra leaders create new forks
