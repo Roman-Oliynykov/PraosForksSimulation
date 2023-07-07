@@ -40,7 +40,6 @@ public class Main {
         pc.paramsAndProperties.add( fpts );
 
         pc.printComparison();
-
     }
 }
 

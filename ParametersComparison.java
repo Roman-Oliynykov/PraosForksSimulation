@@ -98,7 +98,7 @@ class FixedPropagationTimeSimulation {
                 pf.getForkStats();
 
                 paramsAndProperties.get(i).get(j).realBlockTime =
-                        paramsAndProperties.get(i).get(j).timeSlot * pf.staticEpochLen / (double)pf.successfulBlockCount;
+                        paramsAndProperties.get(i).get(j).timeSlot * PraosForksSimulation.staticEpochLen / (double)pf.successfulBlockCount;
                 paramsAndProperties.get(i).get(j).orphanedBlockShare =
                         pf.orphanedBlockCount /(double)(pf.successfulBlockCount + pf.orphanedBlockCount);
                 paramsAndProperties.get(i).get(j).maxOrphanedForkLen = pf.maxOrphanedForkLen;

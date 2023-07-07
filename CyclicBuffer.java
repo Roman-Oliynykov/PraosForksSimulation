@@ -41,16 +41,18 @@ public class CyclicBuffer {
         if ( numberOfSlotLeaders > 0 )
             orphanedBlockCount += ( longestChainExtended ? numberOfSlotLeaders - 1 : numberOfSlotLeaders );
 
-        if ( branches < 2 ) {
+        if ( longestChainExtended && branches < 2 ) {
             if ( maxOrphanedForkLen < orphanedForkLen )
                 maxOrphanedForkLen = orphanedForkLen;
             orphanedForkLen = 0;
             forksPresent = false;
-        } else forksPresent = true;
+        }
+
+        if (branches >= 2) forksPresent = true;
 
 // Scenario for forks:
 // if there are several multiple slot leaders, each of them extend a separate existing chain (to simulate the longest forks)
-// or creates a new fork if the number of slot leaders exceed the number of the currently existing chains
+// or creates a new fork if the number of slot leaders exceeds the number of the currently existing chains
         if ( (numberOfSlotLeaders > 0) && (numberOfSlotLeaders >= seenBranches) )
             forksHappened += ( longestChainExtended ?
 // all branches, including the longest (final) branch have been extended; extra leaders create new forks
